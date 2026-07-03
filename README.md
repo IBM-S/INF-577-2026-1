@@ -108,8 +108,6 @@ checkpoints/                      trained models
 images/                           generated figures
 notebooks/                        02 → 08 pipeline (see above)
 requirements.txt
-CITATION.cff
-THIRD_PARTY_LICENSES
 LICENSE
 ```
 
@@ -119,7 +117,6 @@ Some possible directions:
 
 - Confirm preference-selective specialization and use it for **targeted pruning** of the hypernetwork to reduce the well-known PHN memory overhead.
 - Extend beyond two objectives to higher-dimensional preference spaces.
-- 
 
 ## Author
 
