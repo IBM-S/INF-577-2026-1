@@ -11,6 +11,40 @@ checkpoints_v5/
 checkpoints_v5_feedback/
 checkpoints_VF/
 
+frentes_pareto_resultados/
+
+# p-Hub: 1000 instancias en cada etapa, solo dejamos 3 de muestra en GitHub
+# (wsc_0, wsc_1, wsc_2) para no subir el benchmark completo.
+data/raw/phub/*
+!data/raw/phub/wsc_0/
+!data/raw/phub/wsc_1/
+!data/raw/phub/wsc_2/
+
+data/instances/phub/*
+!data/instances/phub/wsc_0_*.dat
+!data/instances/phub/wsc_1_*.dat
+!data/instances/phub/wsc_2_*.dat
+
+data/graphs/phub/*
+!data/graphs/phub/wsc_0_*.pt
+!data/graphs/phub/wsc_1_*.pt
+!data/graphs/phub/wsc_2_*.pt
+
+data/baselines/raw/phub/*
+!data/baselines/raw/phub/wsc_0_*/
+!data/baselines/raw/phub/wsc_1_*/
+!data/baselines/raw/phub/wsc_2_*/
+
+data/baselines/clean/phub/*
+!data/baselines/clean/phub/wsc_0_*/
+!data/baselines/clean/phub/wsc_1_*/
+!data/baselines/clean/phub/wsc_2_*/
+
+# AMPL es determinista: run_1..run_N de una misma instancia son iguales.
+# Subimos solo run_1 (aplica a cdmx, clustering y phub por igual).
+data/baselines/raw/*/*/run_*/
+!data/baselines/raw/*/*/run_1/
+
 __pycache__/
 
 images/

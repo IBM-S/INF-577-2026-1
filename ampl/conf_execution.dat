@@ -1,0 +1,23 @@
+# config_execution.dat
+# Contiene los parámetros para la ejecución del método de suma ponderada.
+
+# Define el número de ejecuciones ponderadas
+param cantobj :=  2 ;
+param cantejc := 11 ;
+
+# Matriz de pesos
+
+param sigma
+:    1        2 :=
+1    0.00001  0.99999
+2    0.10000  0.90000
+3    0.20000  0.80000
+4    0.30000  0.70000
+5    0.40000  0.60000
+6    0.50000  0.50000
+7    0.60000  0.40000
+8    0.70000  0.30000
+9    0.80000  0.20000
+10   0.90000  0.10000
+11   0.99999  0.00001
+;
