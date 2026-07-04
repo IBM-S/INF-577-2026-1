@@ -1,0 +1,7 @@
+wsc_0  ·  R = 0.1455   |   691 aristas
+  Candidatos: 137   Preinstalados: 13
+  Cubiertos: 79/150 (52.7%)   Sin cubrir: 71
+
+wsc_3  ·  R = 0.06285   |   136 aristas
+  Candidatos: 143   Preinstalados: 7
+  Cubiertos: 19/150 (12.7%)   Sin cubrir: 131

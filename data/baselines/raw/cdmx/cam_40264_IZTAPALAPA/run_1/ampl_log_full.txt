@@ -1,0 +1,19 @@
+
+==========================================================
+               MODO: FIXED LOCATION           
+==========================================================
+ [1] INFORMACION DE LA INSTANCIA
+     Instancia     : iztapalapa_alto_impacto.dat
+     N (Nodos)     : 40264
+     Presupuesto   : 38034
+     Radio (R)     : 200
+     Costos (c1/c2): 1 / 0.2
+     Pre-instalados: 2230
+
+ [2] CONFIGURACION DEL SOLVER
+     Solver        : Gurobi
+     Time Limit    : 3600 s
+     Ejecuciones   : 101 (Puntos en la frontera)
+==========================================================
+
+ [3] CALCULANDO PUNTOS EXTREMOS (Ideal/Nadir)...

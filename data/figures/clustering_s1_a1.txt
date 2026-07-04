@@ -1,0 +1,7 @@
+S1  ·  R = 2.8e+04   |   225029 aristas
+  Candidatos: 4991   Preinstalados: 9
+  Cubiertos: 610/5000 (12.2%)   Sin cubrir: 4390
+
+A1  ·  R = 1800   |   73265 aristas
+  Candidatos: 2972   Preinstalados: 28
+  Cubiertos: 1030/3000 (34.3%)   Sin cubrir: 1970

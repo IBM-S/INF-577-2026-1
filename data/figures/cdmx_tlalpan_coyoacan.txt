@@ -1,0 +1,7 @@
+Tlalpan  ·  R = 200   |   177295 aristas
+  Candidatos: 10606   Preinstalados: 804
+  Cubiertos: 9510/11410 (83.3%)   Sin cubrir: 1900
+
+Coyoacan  ·  R = 200   |   266498 aristas
+  Candidatos: 11346   Preinstalados: 973
+  Cubiertos: 11523/12319 (93.5%)   Sin cubrir: 796
