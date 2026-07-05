@@ -18,32 +18,42 @@ Requires Python 3.10+, PyTorch 2.x and PyTorch Geometric 2.8.
 
 ## Datasets
 
-Three sources of OCP instances are used. Place them under `data/` as shown below.
+Three sources of OCP instances are used. Raw sources go under `data/raw/`; running
+`scripts/instances/build_instances.py` converts them into standardized AMPL `.dat`
+instances (coverage radius `R` and pre-installed count baked in) under `data/instances/`.
 
-**p-Hub Median benchmark** — 1,000 training/validation/test instances. Each instance merges 100 demand points and 50 candidate locations into a unified set of 150 points. Pre-installed cameras are drawn uniformly from {5, ..., 20} and the coverage radius `R` is sampled from (0.05, 0.20).
+**p-Hub Median benchmark** — 1,000 instances. Each instance merges 100 demand points and 50 candidate locations into a unified set of 150 points. Pre-installed cameras are drawn uniformly from {5, ..., 20} and the coverage radius `R` is sampled from (0.05, 0.20). Raw format: one folder per instance with the original coordinate CSVs.
 
 ```
-data/phub_median/
-    wsc_0.txt
-    wsc_1.txt
+data/raw/phub/
+    wsc_0/Input/coordinates_branches_0.csv, coordinates_hubs_0.csv, ...
+    wsc_1/Input/...
     ...  (1000 instances)
+
+data/instances/phub/
+    wsc_0_R0p1455_pre13.dat
+    ...  (1000 instances, AMPL-ready)
 ```
 
-**Clustering basic benchmark** — 9 files with diverse 2D spatial distributions: S1–S4 (5,000 points each), A1 (3,000), A2 (5,250), A3 (7,500), Dim-low (1,351), Unbalance (6,500). Download from http://cs.uef.fi/sipu/datasets/
+**Clustering basic benchmark** — 9 files with diverse 2D spatial distributions: s1–s4 (5,000 points each), a1 (3,000), a2 (5,250), a3 (7,500), dim2 (1,351), unbalance (6,500). Download from http://cs.uef.fi/sipu/datasets/
 
 ```
-data/clustering/
-    S1.txt  S2.txt  S3.txt  S4.txt
-    A1.txt  A2.txt  A3.txt
-    Dim-low.txt  Unbalance.txt
+data/raw/clustering/
+    s1.txt  s2.txt  s3.txt  s4.txt
+    a1.txt  a2.txt  a3.txt
+    dim2.txt  unbalance.txt
+
+data/instances/clustering/
+    s1_R28000_pre9.dat
+    ...  (9 instances, AMPL-ready)
 ```
 
-**CDMX (real-world)** — 16 Mexico City districts built from high-impact crime data, fixed coverage radius `R = 200 m` (e.g. Tlalpan: 11,410 points / 177,295 edges / 804 pre-installed cameras; Coyoacan: 12,319 points / 266,498 edges / 973 pre-installed cameras).
+**CDMX (real-world)** — 16 Mexico City districts built from high-impact crime data, fixed coverage radius `R = 200 m`. Raw files are already in AMPL format (no conversion needed — `build_instances.py` just copies them into `data/instances/cdmx/`).
 
 ```
-data/cdmx/
-    tlalpan.txt
-    coyoacan.txt
+data/raw/cdmx/
+    cam_11410_TLALPAN.dat
+    cam_12319_COYOACAN.dat
     ...  (16 districts)
 ```
 
@@ -67,14 +77,18 @@ Run the notebooks in order:
 
 ```
 notebooks/
-    02_pareto_filter.ipynb        Filter dominated points from exact fronts
-    03_graph_construction.ipynb   Build per-instance proximity graphs
-    04_dataset.ipynb              PyG dataset + train/val/test splits (split.json)
-    05_model.ipynb                PHN + GraphSAGE architecture
-    06_train.ipynb                Training loop
-    07_evaluate.ipynb             Hypervolume + 101-point preference sweep
-    08_xai.ipynb                  Preference-selective activation analysis
+    01_pareto_filter.ipynb         Filter dominated points from exact AMPL fronts → data/baselines/clean/
+    02_graph_construction.ipynb    Build per-instance proximity graphs → data/graphs/
+    03_preference_matching.ipynb   ParetoDataset: ties graphs + preference vectors via dynamic matching
+    04_model.ipynb                 PHN + GraphSAGE architecture
+    06_train.ipynb                 Training loop
+    07b_evaluate_hvi.ipynb         Hypervolume + preference sweep
+    08_xai.ipynb                   Preference-selective activation analysis
 ```
+
+The last three (`06_train`, `07b_evaluate_hvi`, `08_xai`) are next in line for the same
+renumbering/cleanup pass as the first four — expect them to become `05_train.ipynb`,
+`06_evaluate_hvi.ipynb` and `07_xai.ipynb`.
 
 ## Architecture
 
@@ -97,16 +111,32 @@ At evaluation, 101 uniformly spaced preferences `r^(k) = (k/100, 1−k/100)` are
 
 ## Project structure
 
+Data is organized by pipeline stage; each stage keeps the same `phub` / `clustering` / `cdmx` split.
+
 ```
 data/
-    phub_median/                  raw p-Hub Median instances
-    clustering/                   raw clustering benchmark files
-    cdmx/                         raw CDMX district instances
-graphs/                           processed PyG graphs + split.json
-frentes_pareto_resultados/        exact reference Pareto fronts (AMPL+Gurobi)
-checkpoints/                      trained models
-images/                           generated figures
-notebooks/                        02 → 08 pipeline (see above)
+    raw/                   original benchmark sources, untouched
+        phub/  clustering/  cdmx/
+    instances/             standardized AMPL .dat instances (R + n_pre baked in)
+        phub/  clustering/  cdmx/
+    graphs/                PyG Data objects (.pt) + split.json (train/val/test)
+        phub/  clustering/  cdmx/
+    baselines/             exact AMPL+Gurobi reference Pareto fronts
+        raw/               per-instance run_1..run_N solver outputs
+        clean/             filtered non-dominated fronts (objectives.npy, solutions.npy, pareto_clean.txt)
+    figures/               diagnostic plots, one subfolder per notebook/script
+    results/               final tables/figures for the report
+
+scripts/
+    instances/             build_instances.py (raw → data/instances/), gen_instance_lists.py
+    plotting/               plot_instances.py, plot_experiments.py (instance visualization)
+
+ampl/                      AMPL model (mo_location_model.mod, mo_drp_location.run),
+                           batch runner (run_all_instances_ampl_camaras_inf_577.sh),
+                           instance_lists.sh (generated instance ordering)
+notebooks/                 01 → 07 pipeline (see above)
+checkpoints_*/             trained model checkpoints, one folder per experiment (gitignored)
+informe/                   paper/report source (gitignored)
 requirements.txt
 LICENSE
 ```

@@ -60,6 +60,7 @@ images_v5_hvi/
 images_v5_hvi_v2/
 images_v5_hvi_v3_kaggle/
 images_VF/
+images_VF_v2/
 
 informe/
 
@@ -79,5 +80,9 @@ notebooks/08_xai copy.ipynb
 
 notebooks/Etapa_1_actualizado.ipynb
 
-src/
 venv/
+
+resultados_tabla_resumen_VF/
+
+graphs_v2.zip
+graphs.zip
