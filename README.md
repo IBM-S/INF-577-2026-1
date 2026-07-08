@@ -66,13 +66,13 @@ data/raw/cdmx/
 
 The test set exclusively contains unseen spatial distributions to rigorously evaluate out-of-distribution generalization.
 
-| Split      | Source              | Instances   | Percentage |
-|------------|---------------------|-------------|------------|
-| Train      | p-Hub Median        | 800         | 78.05%     |
-| Validation | p-Hub Median        | 100         | 9.76%      |
-| Test       | p-Hub Median        | 100         | 9.76%      |
-| Test       | Clustering + CDMX   | 25 (9+16)   | 2.44%      |
-| **Total**  |                     | **1025**    | **100%**   |
+| Split      | Source            | Instances | Percentage |
+| ---------- | ----------------- | --------- | ---------- |
+| Train      | p-Hub Median      | 800       | 78.05%     |
+| Validation | p-Hub Median      | 100       | 9.76%      |
+| Test       | p-Hub Median      | 100       | 9.76%      |
+| Test       | Clustering + CDMX | 25 (9+16) | 2.44%      |
+| **Total**  |                   | **1025**  | **100%**   |
 
 ## Pipeline
 
@@ -86,10 +86,13 @@ notebooks/
     02_graph_construction.ipynb    Build per-instance proximity graphs → data/graphs/
     03_preference_matching.ipynb   ParetoDataset: ties graphs + preference vectors via dynamic matching
     04_model.ipynb                 PHN + GraphSAGE architecture
-    05_train.ipynb                 Training loop → checkpoints_*/
+    05_train.ipynb                 Training loop → checkpoints_VF/
     06_evaluate_hvi.ipynb          Hypervolume + preference sweep → data/results/
     07_xai.ipynb                   Preference-selective activation analysis → data/figures/07_xai/
 ```
+
+The reported checkpoint (`checkpoints_VF/best_model_kaggle_VF_v2.pt`) was trained on
+Kaggle for speed (GPU), but `05_train.ipynb` runs identically on a local CPU — just slower.
 
 ## Architecture
 
@@ -136,8 +139,7 @@ ampl/                      AMPL model (mo_location_model.mod, mo_drp_location.ru
                            batch runner (run_all_instances_ampl_camaras_inf_577.sh),
                            instance_lists.sh (generated instance ordering)
 notebooks/                 01 → 07 pipeline (see above)
-checkpoints_*/             trained model checkpoints, one folder per experiment (gitignored)
-informe/                   paper/report source (gitignored)
+checkpoints_VF/            output of 05_train.ipynb; the reported run was trained on Kaggle
 requirements.txt
 LICENSE
 ```
