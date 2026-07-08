@@ -22,7 +22,12 @@ Three sources of OCP instances are used. Raw sources go under `data/raw/`; runni
 `scripts/instances/build_instances.py` converts them into standardized AMPL `.dat`
 instances (coverage radius `R` and pre-installed count baked in) under `data/instances/`.
 
-**p-Hub Median benchmark** — 1,000 instances. Each instance merges 100 demand points and 50 candidate locations into a unified set of 150 points. Pre-installed cameras are drawn uniformly from {5, ..., 20} and the coverage radius `R` is sampled from (0.05, 0.20). Raw format: one folder per instance with the original coordinate CSVs.
+**p-Hub Median benchmark** — 1,000 instances, sourced from https://github.com/aleksandra-gro/Dataset. Each instance merges 100 demand points and 50 candidate locations into a unified set of 150 points. Pre-installed cameras are drawn uniformly from {5, ..., 20} and the coverage radius `R` is sampled from (0.05, 0.20). Raw format: one folder per instance with the original coordinate CSVs.
+
+Only 3 sample instances (`wsc_0`, `wsc_1`, `wsc_2`) are kept under version control at every
+pipeline stage (`raw/`, `instances/`, `graphs/`, `baselines/`) — there is no point pushing all
+1,000 instances (and their AMPL runs) to GitHub. Download the full benchmark from the source
+repo above and regenerate the rest locally with `scripts/instances/build_instances.py`.
 
 ```
 data/raw/phub/
@@ -81,14 +86,10 @@ notebooks/
     02_graph_construction.ipynb    Build per-instance proximity graphs → data/graphs/
     03_preference_matching.ipynb   ParetoDataset: ties graphs + preference vectors via dynamic matching
     04_model.ipynb                 PHN + GraphSAGE architecture
-    06_train.ipynb                 Training loop
-    07b_evaluate_hvi.ipynb         Hypervolume + preference sweep
-    08_xai.ipynb                   Preference-selective activation analysis
+    05_train.ipynb                 Training loop → checkpoints_*/
+    06_evaluate_hvi.ipynb          Hypervolume + preference sweep → data/results/
+    07_xai.ipynb                   Preference-selective activation analysis → data/figures/07_xai/
 ```
-
-The last three (`06_train`, `07b_evaluate_hvi`, `08_xai`) are next in line for the same
-renumbering/cleanup pass as the first four — expect them to become `05_train.ipynb`,
-`06_evaluate_hvi.ipynb` and `07_xai.ipynb`.
 
 ## Architecture
 
