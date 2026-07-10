@@ -125,6 +125,9 @@ data/
         phub/  clustering/  cdmx/
     graphs/                PyG Data objects (.pt) + split.json (train/val/test)
         phub/  clustering/  cdmx/
+        (only 1 lightweight sample per clustering/cdmx is versioned — .pt files are
+        heavy since edge_index scales with instance size; regenerate the rest by
+        running 02_graph_construction.ipynb, it takes minutes from data/instances/)
     baselines/             exact AMPL+Gurobi reference Pareto fronts
         raw/               per-instance run_1..run_N solver outputs
         clean/             filtered non-dominated fronts (objectives.npy, solutions.npy, pareto_clean.txt)
