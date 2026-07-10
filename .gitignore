@@ -17,6 +17,15 @@ data/graphs/phub/*
 !data/graphs/phub/wsc_1_*.pt
 !data/graphs/phub/wsc_2_*.pt
 
+# clustering y cdmx: los .pt son pesados (edge_index crece con N) y se regeneran
+# en minutos desde data/instances/ con 02_graph_construction.ipynb. Dejamos solo
+# el mas liviano de cada uno de muestra.
+data/graphs/clustering/*
+!data/graphs/clustering/dim2_R5150_pre6.pt
+
+data/graphs/cdmx/*
+!data/graphs/cdmx/cam_1390_MILPA_ALTA.pt
+
 data/baselines/raw/phub/*
 !data/baselines/raw/phub/wsc_0_*/
 !data/baselines/raw/phub/wsc_1_*/
